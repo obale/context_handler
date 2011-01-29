@@ -1,0 +1,91 @@
+/**
+ * context-handler - org.example.testplugin
+ *
+ * Copyright (C) 2011 by Networld Project
+ * Written by Alex Oberhauser <oberhauseralex@networld.to>
+ * All Rights Reserved
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by 
+ * the Free Software Foundation, version 3 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this software.  If not, see <http://www.gnu.org/licenses/>
+ */
+
+package to.neworld.semantic.plugins;
+
+import java.util.Vector;
+
+import org.dom4j.DocumentException;
+
+import to.networld.semantic.contexthandler.data.ContextTag;
+import to.networld.semantic.contexthandler.plugins.Plugin;
+
+/**
+ * @author Alex Oberhauser
+ */
+public class TestPlugin implements Plugin {
+
+	public String getPluginName() { return "Test Plugin"; }
+	public String getPluginDescription() { return "Plugin with hardcoded tags. Only for testing purpose to demonstrate the plugin mechanism."; }
+	public String getPluginVersion() { return "v0.01"; }
+	
+	/**
+	 * @see to.networld.semantic.contexthandler.plugins.Plugin#getContextTags()
+	 */
+	@Override
+	public Vector<ContextTag> getContextTags() {
+		Vector<ContextTag> retVector = new Vector<ContextTag>();
+		
+		try {
+			ContextTag exampleTag = new ContextTag("computerscience");
+			exampleTag.setOrgSpelling("Computer Science");
+			exampleTag.setOrgSpelling("computer science");
+			exampleTag.incrementFrequency();
+			exampleTag.setOrgSpelling("computerScience");
+			exampleTag.incrementFrequency();
+			exampleTag.setPriority(0.80f);
+			exampleTag.setClassification("http://example.org/taxonomy.rdf#Interests");
+			exampleTag.setClassification("http://example.org/taxonomy.rdf#Work");
+			exampleTag.setCooccurURI("http://example.org/work/foaf.rdf");
+			exampleTag.setCooccurURI("http://example.org/private/foaf.rdf");
+			retVector.add(exampleTag);
+			
+			ContextTag exampleTag2 = new ContextTag("artificialintelligence");
+			exampleTag2.setOrgSpelling("AI");
+			exampleTag2.setOrgSpelling("Artificial Intelligence");
+			exampleTag2.incrementFrequency();
+			exampleTag2.setOrgSpelling("ai");
+			exampleTag2.incrementFrequency();
+			exampleTag2.setPriority(1.0f);
+			exampleTag2.setClassification("http://example.org/taxonomy.rdf#Private");
+			exampleTag2.setClassification("http://example.org/taxonomy.rdf#Interests");
+			exampleTag2.setCooccurURI("http://example.org/private/foaf.rdf");
+			retVector.add(exampleTag2);
+			
+			ContextTag exampleTag3 = new ContextTag("semanticweb");
+			exampleTag3.setOrgSpelling("semweb");
+			exampleTag3.setOrgSpelling("Semantic Web");
+			exampleTag3.incrementFrequency();
+			exampleTag3.setOrgSpelling("semantic web");
+			exampleTag3.incrementFrequency();
+			exampleTag3.setPriority(1.0f);
+			exampleTag3.setClassification("http://example.org/taxonomy.rdf#Work");
+			exampleTag3.setClassification("http://example.org/taxonomy.rdf#Private");
+			exampleTag3.setCooccurURI("http://example.org/work/foaf.rdf");
+			exampleTag3.setCooccurURI("http://example.org/private/foaf.rdf");
+			retVector.add(exampleTag3);
+		} catch (DocumentException e) {
+			e.printStackTrace();
+		}
+		
+		return retVector;
+	}
+
+}
