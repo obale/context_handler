@@ -53,5 +53,7 @@ public abstract class Config {
 	}
 	
 	public static String getTaxonomyNamespace() { return "http://context.networld.to/taxonomy.rdf#"; }
+	
+	public static String getEbookNamespace() { return "http://context.networld.to/ebook/"; }
 
 }

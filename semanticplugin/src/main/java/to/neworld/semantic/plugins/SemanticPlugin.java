@@ -38,10 +38,18 @@ import to.networld.semantic.contexthandler.data.ContextTag;
 import to.networld.semantic.contexthandler.plugins.Plugin;
 
 /**
+ * Crawls over a linked open data starting from the FOAF file of an agent.
+ * The current implementation uses foaf:interests and sioc:topic. For 
+ * performance the extraction of sioc:topic is executed in a separated
+ * Callable<Vector<ContextCloud>>>
+ * 
  * @author Alex Oberhauser
  */
 public class SemanticPlugin implements Plugin {
 
+	/**
+	 * TODO: Write a central configuration file for all plugins and read this value from the config. 
+	 */
 	private static final String PERSON_FOAF_URL = "http://devnull.networld.to/foaf.rdf";
 	private static final int NTHREADS = 50;
 	

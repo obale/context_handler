@@ -40,9 +40,15 @@ public class TestMain {
 		Vector<Plugin> plugins = pluginManager.getPluginList();
 		System.out.println("Found plugins:");
 		for ( Plugin plugin : plugins ) {
-			System.out.println("\t* " + plugin.getPluginName() + " " + plugin.getPluginVersion() + "\n\t  " + plugin.getPluginDescription());
-			contextCloud.addContextTags(plugin.getContextTags());
+			try {
+				System.out.println("\t* " + plugin.getPluginName() + " " + plugin.getPluginVersion() + "\n\t  " + plugin.getPluginDescription());	
+				contextCloud.addContextTags(plugin.getContextTags());
+			} catch (Exception e) {
+				System.err.println("[!!] Not able to gather context information from plugin '" + 
+						plugin.getPluginName() + "' Reason: " + e.getLocalizedMessage());
+			}
 		}
+		System.out.println("---");
 		contextCloud.flush();
 		
 		System.out.println();

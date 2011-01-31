@@ -24,6 +24,7 @@ import java.util.Vector;
 
 import org.dom4j.DocumentException;
 
+import to.networld.semantic.contexthandler.common.Config;
 import to.networld.semantic.contexthandler.data.ContextTag;
 import to.networld.semantic.contexthandler.plugins.Plugin;
 
@@ -51,8 +52,8 @@ public class TestPlugin implements Plugin {
 			exampleTag.setOrgSpelling("computerScience");
 			exampleTag.incrementFrequency();
 			exampleTag.setPriority(0.80f);
-			exampleTag.setClassification("http://example.org/taxonomy.rdf#Interests");
-			exampleTag.setClassification("http://example.org/taxonomy.rdf#Work");
+			exampleTag.setClassification(Config.getTaxonomyNamespace() + "Interests");
+			exampleTag.setClassification(Config.getTaxonomyNamespace() + "Work");
 			exampleTag.setCooccurURI("http://example.org/work/foaf.rdf");
 			exampleTag.setCooccurURI("http://example.org/private/foaf.rdf");
 			retVector.add(exampleTag);
@@ -64,8 +65,8 @@ public class TestPlugin implements Plugin {
 			exampleTag2.setOrgSpelling("ai");
 			exampleTag2.incrementFrequency();
 			exampleTag2.setPriority(1.0f);
-			exampleTag2.setClassification("http://example.org/taxonomy.rdf#Private");
-			exampleTag2.setClassification("http://example.org/taxonomy.rdf#Interests");
+			exampleTag2.setClassification(Config.getTaxonomyNamespace() + "Private");
+			exampleTag2.setClassification(Config.getTaxonomyNamespace() + "Interests");
 			exampleTag2.setCooccurURI("http://example.org/private/foaf.rdf");
 			retVector.add(exampleTag2);
 			
@@ -76,8 +77,8 @@ public class TestPlugin implements Plugin {
 			exampleTag3.setOrgSpelling("semantic web");
 			exampleTag3.incrementFrequency();
 			exampleTag3.setPriority(1.0f);
-			exampleTag3.setClassification("http://example.org/taxonomy.rdf#Work");
-			exampleTag3.setClassification("http://example.org/taxonomy.rdf#Private");
+			exampleTag3.setClassification(Config.getTaxonomyNamespace() + "Work");
+			exampleTag3.setClassification(Config.getTaxonomyNamespace() + "Private");
 			exampleTag3.setCooccurURI("http://example.org/work/foaf.rdf");
 			exampleTag3.setCooccurURI("http://example.org/private/foaf.rdf");
 			retVector.add(exampleTag3);

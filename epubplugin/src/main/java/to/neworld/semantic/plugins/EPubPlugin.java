@@ -29,15 +29,23 @@ import java.util.zip.ZipFile;
 import org.dom4j.DocumentException;
 
 import to.networld.scrawler.ebooks.epub.EPub;
+import to.networld.semantic.contexthandler.common.Config;
 import to.networld.semantic.contexthandler.common.StringHandler;
 import to.networld.semantic.contexthandler.data.ContextTag;
 import to.networld.semantic.contexthandler.plugins.Plugin;
 
 /**
+ * Plugin that extracts context information from ePub (ebooks). As context information
+ * the subject about the book is used. The cooccure URI is not the path to the ebook, but
+ * a combination of Title, Author and special Namespace for ebooks. 
+ * 
  * @author Alex Oberhauser
  */
 public class EPubPlugin implements Plugin {
 
+	/**
+	 * TODO: Write a central configuration file for all plugins and read this value from the config. 
+	 */
 	private static final String EPUB_DIRECTORY = "/home/obale/FBooks/feedbooks.com/book";
 	
 	public String getPluginName() { return "EBook (ePub) Plugin"; }
@@ -59,10 +67,10 @@ public class EPubPlugin implements Plugin {
 				Vector<String> subjects = epub.getSubjects();
 				for ( String subject : subjects ) {
 					ContextTag tag = new ContextTag(StringHandler.normalize(subject));
-					tag.setClassification("http://example.org/taxonomy.rdf#EPub");
+					tag.setClassification(Config.getTaxonomyNamespace() + "EPub");
 					tag.setPriority(1.0f);
 					tag.setOrgSpelling(subject);
-					String ebookURI = "http://example.org/ebook/" +  URLEncoder.encode(epub.getTitle() + "-" + epub.getAuthor(), "UTF-8");
+					String ebookURI = Config.getEbookNamespace() +  URLEncoder.encode(epub.getTitle() + "-" + epub.getAuthor(), "UTF-8");
 					tag.setCooccurURI(ebookURI);
 					retVector.add(tag);
 				}
