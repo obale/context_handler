@@ -20,6 +20,7 @@
 
 package to.networld.semantic.contexthandler.data;
 
+import java.io.IOException;
 import java.util.LinkedList;
 
 import org.dom4j.DocumentException;
@@ -57,7 +58,13 @@ public class ContextTag extends RDFEntity implements IContextTag {
 		this.normalizedTag = _normalizedTag;
 		
 		this.tagNode = this.document.addElement(new QName("Tag", Ontologies.SCOT));
-		tagNode.addAttribute(new QName("about", Ontologies.RDF), Config.getContextTagPrefix() + this.normalizedTag);
+		Config config;
+		try {
+			config = Config.getInstance();
+			tagNode.addAttribute(new QName("about", Ontologies.RDF), config.getContextTagPrefix() + this.normalizedTag);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 		this.tagNode.addElement(new QName("name", Ontologies.SCOT)).addText(this.normalizedTag);
 		

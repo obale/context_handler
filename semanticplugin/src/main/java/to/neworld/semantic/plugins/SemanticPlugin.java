@@ -20,6 +20,7 @@
 
 package to.neworld.semantic.plugins;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -62,6 +63,12 @@ public class SemanticPlugin implements Plugin {
 	 */
 	@Override
 	public Vector<ContextTag> getContextTags() {
+		Config config = null;
+		try {
+			config = Config.getInstance();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 		Vector<ContextTag> retVector = new Vector<ContextTag>();
 		try {
 			IFOAFPerson person = new Person(new URL(PERSON_FOAF_URL));
@@ -80,7 +87,8 @@ public class SemanticPlugin implements Plugin {
 			for ( String interest : interests ) {
 				String normalized = StringHandler.normalize(interest);
 				ContextTag tag = new ContextTag(normalized);
-				tag.setClassification(Config.getTaxonomyNamespace() + "PrivateInterests");
+				if ( config != null )
+					tag.setClassification(config.getTaxonomyNamespace() + "PrivateInterests");
 				tag.setPriority(1.0f);
 				tag.setCooccurURI(PERSON_FOAF_URL);
 				tag.setOrgSpelling(interest);

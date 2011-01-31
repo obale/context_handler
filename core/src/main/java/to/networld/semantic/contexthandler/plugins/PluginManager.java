@@ -43,6 +43,8 @@ import to.networld.semantic.contexthandler.common.Config;
  */
 public class PluginManager {
 	
+	private Config config = null;
+
 	public String getPluginEntryClass(InputStream _profileXMLConfig) throws DocumentException {
 		SAXReader reader = new SAXReader();
 		Document doc = reader.read(_profileXMLConfig);
@@ -81,21 +83,28 @@ public class PluginManager {
 	public PluginManager() throws InstantiationException, IllegalAccessException, ClassNotFoundException, DocumentException {
 		Policy.setPolicy(new PluginPolicy());
 		System.setSecurityManager(new SecurityManager());
+		try {
+			this.config  = Config.getInstance();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public Vector<Plugin> getPluginList() {
 		Vector<Plugin> retVector = new Vector<Plugin>();
-		String pluginDirectory = Config.getPluginDirectory();
-		if ( pluginDirectory != null ) {
-			File pluginDirectoryFile =  new File(pluginDirectory);
-			String [] jarFiles = pluginDirectoryFile.list(new JarFilter());
-			for ( int count = 0; count < jarFiles.length; count++ ) {
-				try {
-					Plugin plugin = loadPlugin(new URL("file://" + pluginDirectory + jarFiles[count]));
-					if ( plugin != null )
-						retVector.add(plugin);
-				} catch (MalformedURLException e) {
-					e.printStackTrace();
+		if ( this.config != null ) {
+			String pluginDirectory = this.config.getPluginDirectory();
+			if ( pluginDirectory != null ) {
+				File pluginDirectoryFile =  new File(pluginDirectory);
+				String [] jarFiles = pluginDirectoryFile.list(new JarFilter());
+				for ( int count = 0; count < jarFiles.length; count++ ) {
+					try {
+						Plugin plugin = loadPlugin(new URL("file://" + pluginDirectory + jarFiles[count]));
+						if ( plugin != null )
+							retVector.add(plugin);
+					} catch (MalformedURLException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		}

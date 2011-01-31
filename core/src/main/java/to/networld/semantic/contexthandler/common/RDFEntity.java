@@ -39,11 +39,18 @@ import org.dom4j.io.XMLWriter;
  * @author Alex Oberhauser
  */
 public class RDFEntity {
+	private Config config;
 	private final SAXReader reader;
 	protected final Document document;
 	protected final DocumentFactory documentFactory;
 	
 	protected RDFEntity() throws DocumentException {
+		try {
+			this.config = Config.getInstance();
+		} catch (IOException e) {
+			e.printStackTrace();
+			this.config = null;
+		}
 		this.reader = new SAXReader();
 		this.documentFactory = this.reader.getDocumentFactory();
 		this.document = this.documentFactory.createDocument();
@@ -58,8 +65,10 @@ public class RDFEntity {
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		try {
 			OutputFormat format = OutputFormat.createPrettyPrint();
-			format.setIndentSize(Config.getRDFIndentSize());
-			format.setExpandEmptyElements(Config.getRDFExpandEmptyElements());
+			if ( this.config != null ) {
+				format.setIndentSize(this.config.getRDFIndentSize());
+				format.setExpandEmptyElements(this.config.getRDFExpandEmptyElements());
+			}
 			XMLWriter writer = new XMLWriter(os, format);
 			writer.write(this.document);
 			return os.toString();

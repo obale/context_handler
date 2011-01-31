@@ -57,6 +57,12 @@ public class EPubPlugin implements Plugin {
 	 */
 	@Override
 	public Vector<ContextTag> getContextTags() {
+		Config config = null;
+		try {
+			config = Config.getInstance();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		Vector<ContextTag> retVector = new Vector<ContextTag>();
 		File epubDir = new File(EPUB_DIRECTORY);
 		String[] epubPaths = epubDir.list(new EPubFilter());
@@ -67,11 +73,14 @@ public class EPubPlugin implements Plugin {
 				Vector<String> subjects = epub.getSubjects();
 				for ( String subject : subjects ) {
 					ContextTag tag = new ContextTag(StringHandler.normalize(subject));
-					tag.setClassification(Config.getTaxonomyNamespace() + "EPub");
+					if ( config != null )
+						tag.setClassification(config.getTaxonomyNamespace() + "EPub");
 					tag.setPriority(1.0f);
 					tag.setOrgSpelling(subject);
-					String ebookURI = Config.getEbookNamespace() +  URLEncoder.encode(epub.getTitle() + "-" + epub.getAuthor(), "UTF-8");
-					tag.setCooccurURI(ebookURI);
+					if ( config != null ) {
+						String ebookURI = config.getEbookNamespace() +  URLEncoder.encode(epub.getTitle() + "-" + epub.getAuthor(), "UTF-8");
+						tag.setCooccurURI(ebookURI);
+					}
 					retVector.add(tag);
 				}
 			} catch (IOException e) {

@@ -20,6 +20,7 @@
 
 package to.neworld.semantic.plugins;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Vector;
 import java.util.concurrent.Callable;
@@ -44,13 +45,20 @@ public class PostFuture implements Callable<Vector<ContextTag>> {
 	 */
 	@Override
 	public Vector<ContextTag> call() throws Exception {
+		Config config = null;
+		try {
+			config = Config.getInstance();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		Vector<ContextTag> retVector = new Vector<ContextTag>();
 		Post post = new Post(new URL(this.url));
 		Vector<String> postTopics = post.getTopics();
 		for ( String topic : postTopics ) {
 			String normalized = StringHandler.normalize(topic);
 			ContextTag tag = new ContextTag(normalized);
-			tag.setClassification(Config.getTaxonomyNamespace() + "PublicationTopic");
+			if (config != null )
+				tag.setClassification(config.getTaxonomyNamespace() + "PublicationTopic");
 			tag.setPriority(1.0f);
 			tag.setCooccurURI(this.url);
 			tag.setOrgSpelling(topic);

@@ -20,40 +20,62 @@
 
 package to.networld.semantic.contexthandler.common;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.Properties;
 
 import to.networld.semantic.contexthandler.plugins.PluginManager;
 
 /**
- * @author obale
+ * @author Alex Oberhauser
  */
-public abstract class Config {
-	public static String getContextTagPrefix() { return "#"; }
+public class Config {
+	private static Config instance = null;
+	private final Properties prop; 
+	
+	private Config() throws IOException {
+		this.prop = new Properties();
+		this.prop.load(Config.class.getResourceAsStream("/default.properties"));
+	}
+	
+	public static Config getInstance() throws IOException {
+		if ( instance == null )
+			instance = new Config();
+		return instance;
+	}
+	
+	public String getContextTagPrefix() { return this.prop.getProperty("core.ContextTagPrefix"); }
 
 	/**
 	 * @return Indent Size for the RDF/XML serialization.
 	 */
-	public static int getRDFIndentSize() { return 8; }
+	public int getRDFIndentSize() { return new Integer(this.prop.getProperty("core.RDFIndentSize")); }
 	
 	/**
 	 * Expanded (value: true): <element></element>
 	 * Not expanded (value: false): <element/>
 	 * @return Should empty element expanded during RDF/XML serialization.
 	 */
-	public static boolean getRDFExpandEmptyElements() { return false; }
+	public boolean getRDFExpandEmptyElements() { return new Boolean(this.prop.getProperty("core.RDFExpandEmptyElements")); }
 
 	/**
 	 * @return in which directory the jars plugins are stored.
 	 */
-	public static String getPluginDirectory() {
-		URL url = PluginManager.class.getResource("/plugins/");
-		if ( url != null )
-			return url.getFile();
-		return null;
+	public String getPluginDirectory() {
+		boolean relative = new Boolean(this.prop.getProperty("core.pluginDirRelative"));
+		String pluginDir = this.prop.getProperty("core.pluginDir");
+		if ( relative ) {
+			URL url = PluginManager.class.getResource(pluginDir);
+			if ( url != null )
+				return url.getFile();
+			return null;
+		} else {
+			return pluginDir;
+		}
 	}
 	
-	public static String getTaxonomyNamespace() { return "http://context.networld.to/taxonomy.rdf#"; }
+	public String getTaxonomyNamespace() { return this.prop.getProperty("core.TaxonomyNamespace"); }
 	
-	public static String getEbookNamespace() { return "http://context.networld.to/ebook/"; }
+	public String getEbookNamespace() { return this.prop.getProperty("core.EbookNamespace"); }
 
 }
