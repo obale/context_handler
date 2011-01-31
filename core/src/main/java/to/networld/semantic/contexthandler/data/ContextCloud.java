@@ -22,6 +22,7 @@ package to.networld.semantic.contexthandler.data;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Vector;
 
 import org.dom4j.DocumentException;
@@ -33,7 +34,7 @@ import to.networld.semantic.contexthandler.common.RDFEntity;
 import to.networld.semantic.contexthandler.interfaces.IContextCloud;
 
 /**
- * @author obale
+ * @author Alex Oberhauser
  */
 public class ContextCloud extends RDFEntity implements IContextCloud {
 	private final String contextCloudID;
@@ -66,22 +67,17 @@ public class ContextCloud extends RDFEntity implements IContextCloud {
 	 */
 	@Override
 	public void addContextTag(ContextTag contextTag) {
-//		Element tag = contextTag.getTagNode();
-//		tag.detach();
-//		
-//		Element cooccureElement = this.contextTagRootNode.addElement(new QName("contains", Ontologies.SCOT));
-//		cooccureElement.add(tag);
 		String normalized = contextTag.getNormalizedTag();
 		if ( this.internalContextCloud.containsKey(normalized) ) {
 			ContextTag oldTag = this.internalContextCloud.get(normalized);
 			oldTag.incrementFrequency();
-			Vector<String> classifications = contextTag.getClassification();
+			LinkedList<String> classifications = contextTag.getClassification();
 			for ( String entry : classifications )
 				oldTag.setClassification(entry);
-			Vector<String> cooccur = contextTag.getCooccurURI();
+			LinkedList<String> cooccur = contextTag.getCooccurURI();
 			for ( String entry : cooccur )
 				oldTag.setCooccurURI(entry);
-			Vector<String> orgspelling = contextTag.getOrgSpelling();
+			LinkedList<String> orgspelling = contextTag.getOrgSpelling();
 			for ( String entry : orgspelling )
 				oldTag.setOrgSpelling(entry);
 			float priority = contextTag.getPriority();

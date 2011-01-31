@@ -20,7 +20,7 @@
 
 package to.networld.semantic.contexthandler.data;
 
-import java.util.Vector;
+import java.util.LinkedList;
 
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -43,9 +43,9 @@ public class ContextTag extends RDFEntity implements IContextTag {
 	private int absoluteFrequency = 0;
 	private float priority = 0.0f;
 	
-	private Vector<String> orginalSpellingVector = new Vector<String>();
-	private Vector<String> classificationVector = new Vector<String>();
-	private Vector<String> cooccurVector = new Vector<String>();
+	private LinkedList<String> orginalSpellingVector = new LinkedList<String>();
+	private LinkedList<String> classificationVector = new LinkedList<String>();
+	private LinkedList<String> cooccurVector = new LinkedList<String>();
 	
 	private final Element tagNode;
 	
@@ -69,8 +69,10 @@ public class ContextTag extends RDFEntity implements IContextTag {
 	 */
 	@Override
 	public void setOrgSpelling(String _tagOrgName) {
-		this.orginalSpellingVector.add(_tagOrgName);
-		this.tagNode.addElement(new QName("synonym", Ontologies.SCOT)).addText(_tagOrgName);
+		if ( !this.orginalSpellingVector.contains(_tagOrgName) ) {
+			this.orginalSpellingVector.add(_tagOrgName);
+			this.tagNode.addElement(new QName("spelling_variant", Ontologies.SCOT)).addText(_tagOrgName);
+		}
 	}
 
 	/**
@@ -78,7 +80,10 @@ public class ContextTag extends RDFEntity implements IContextTag {
 	 */
 	@Override
 	public void setClassification(String _classificationURIorString) {
-		this.classificationVector.add(_classificationURIorString);
+		if ( !this.classificationVector.contains(_classificationURIorString) ) {
+			this.classificationVector.add(_classificationURIorString);
+			this.tagNode.addElement(new QName("object", Ontologies.RDF)).addText(_classificationURIorString);
+		}
 	}
 
 	/**
@@ -102,9 +107,11 @@ public class ContextTag extends RDFEntity implements IContextTag {
 	 */
 	@Override
 	public void setCooccurURI(String _uri) {
-		this.cooccurVector.add(_uri);
-		Element element = this.tagNode.addElement(new QName("cooccurs_in", Ontologies.SCOT));
-		element.addAttribute(new QName("resource", Ontologies.RDF), _uri);
+		if ( !this.cooccurVector.contains(_uri) ) {
+			this.cooccurVector.add(_uri);
+			Element element = this.tagNode.addElement(new QName("cooccurs_in", Ontologies.SCOT));
+			element.addAttribute(new QName("resource", Ontologies.RDF), _uri);
+		}
 	}
 
 	/**
@@ -125,7 +132,7 @@ public class ContextTag extends RDFEntity implements IContextTag {
 	 * @see to.networld.semantic.contexthandler.interfaces.IContextTag#getClassification()
 	 */
 	@Override
-	public Vector<String> getClassification() { return this.classificationVector; }
+	public LinkedList<String> getClassification() { return this.classificationVector; }
 
 	/**
 	 * @see to.networld.semantic.contexthandler.interfaces.IContextTag#getAbsoluteFrequency()
@@ -143,7 +150,7 @@ public class ContextTag extends RDFEntity implements IContextTag {
 	 * @see to.networld.semantic.contexthandler.interfaces.IContextTag#getCooccurURI()
 	 */
 	@Override
-	public Vector<String> getCooccurURI() { return this.cooccurVector; }
+	public LinkedList<String> getCooccurURI() { return this.cooccurVector; }
 
 	public Element getTagNode() { return this.tagNode; }
 	
@@ -151,5 +158,5 @@ public class ContextTag extends RDFEntity implements IContextTag {
 	 * @see to.networld.semantic.contexthandler.interfaces.IContextTag#getOrgSpelling()
 	 */
 	@Override
-	public Vector<String> getOrgSpelling() { return this.orginalSpellingVector; }
+	public LinkedList<String> getOrgSpelling() { return this.orginalSpellingVector; }
 }

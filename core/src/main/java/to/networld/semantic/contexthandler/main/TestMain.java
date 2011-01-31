@@ -20,9 +20,10 @@
 
 package to.networld.semantic.contexthandler.main;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Vector;
-
-import org.dom4j.DocumentException;
 
 import to.networld.semantic.contexthandler.data.ContextCloud;
 import to.networld.semantic.contexthandler.plugins.Plugin;
@@ -33,15 +34,21 @@ import to.networld.semantic.contexthandler.plugins.PluginManager;
  */
 public class TestMain {
 	
-	public static void main(String[] args) throws DocumentException, InstantiationException, IllegalAccessException, ClassNotFoundException {
+	public static void main(String[] args) throws Exception {
 		ContextCloud contextCloud = new ContextCloud("#myContext");
 		PluginManager pluginManager = new PluginManager();
 		Vector<Plugin> plugins = pluginManager.getPluginList();
+		System.out.println("Found plugins:");
 		for ( Plugin plugin : plugins ) {
-			System.out.println(plugin.getPluginName() + " - " + plugin.getPluginVersion() + " := " + plugin.getPluginDescription());
+			System.out.println("\t* " + plugin.getPluginName() + " " + plugin.getPluginVersion() + "\n\t  " + plugin.getPluginDescription());
 			contextCloud.addContextTags(plugin.getContextTags());
 		}
 		contextCloud.flush();
+		
+		System.out.println();
 		System.out.println(contextCloud);
+		
+		BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(new File("/tmp/context_cloud.rdf")));
+		out.write(contextCloud.toString().getBytes());
 	}
 }

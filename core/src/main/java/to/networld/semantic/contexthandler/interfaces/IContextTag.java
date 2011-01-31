@@ -20,7 +20,7 @@
 
 package to.networld.semantic.contexthandler.interfaces;
 
-import java.util.Vector;
+import java.util.LinkedList;
 
 /**
  * Interface for a single entry in the context cloud. Encapsulates all relevant
@@ -71,9 +71,9 @@ public interface IContextTag {
 	public abstract void incrementFrequency();
 
 	public abstract String getNormalizedTag();
-	public abstract Vector<String> getClassification();
 	public abstract int getAbsoluteFrequency();
 	public abstract float getPriority();
-	public abstract Vector<String> getCooccurURI();
-	public abstract Vector<String> getOrgSpelling();
+	public abstract LinkedList<String> getClassification();
+	public abstract LinkedList<String> getCooccurURI();
+	public abstract LinkedList<String> getOrgSpelling();
 }

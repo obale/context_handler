@@ -33,7 +33,7 @@ import java.util.zip.ZipEntry;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
-import org.dom4j.Node;
+import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
 import to.networld.semantic.contexthandler.common.Config;
@@ -46,9 +46,9 @@ public class PluginManager {
 	public String getPluginEntryClass(InputStream _profileXMLConfig) throws DocumentException {
 		SAXReader reader = new SAXReader();
 		Document doc = reader.read(_profileXMLConfig);
-		Node node = doc.selectSingleNode("/plugin");
-		if (node != null )
-			return node.valueOf("@class");
+		Element element = doc.getRootElement();
+		if ( element != null )
+			return element.valueOf("@class");
 		return null;
 	}
 	

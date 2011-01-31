@@ -7,27 +7,22 @@
                 <eclipse.dependency>true</eclipse.dependency>
         </properties>
 
-        <distributionManagement>
+        <repositories>
                 <repository>
-                        <id>networld-ssh-repo</id>
+                        <id>networld-repo</id>
                         <name>Networld Repository</name>
-                        <url>scp://repo1.networld.to:64446/home/www/repo1</url>
+                        <url>http://repo1.networld.to</url>
                 </repository>
-                <snapshotRepository>
-                        <id>networld-ssh-repo</id>
-                        <name>Networld Repository</name>
-                        <url>scp://repo1.networld.to:64446/home/www/repo1</url>
-                </snapshotRepository>
-        </distributionManagement>
+        </repositories>
+
 
         <modelVersion>4.0.0</modelVersion>
         <groupId>to.networld.semantic</groupId>
-        <artifactId>context-handler</artifactId>
+        <artifactId>contexthandler-epubplugin</artifactId>
         <version>0.1-SNAPSHOT</version>
-        <packaging>pom</packaging>
-        <name>Context Handling Library</name>
-        <description>Context Handling Library is the proof-of-concept implementation of the theoretical work "Agent Similarity Computation with the Help of Ontology Based Context Information".
-        </description>
+        <packaging>jar</packaging>
+        <name>Context Handling Library - EBook (ePub) Plugin</name>
+        <description>Extracts the topics of ebooks that are in epub format.</description>
 
         <organization>
                 <name>Networld</name>
@@ -40,12 +35,6 @@
                         <url>LICENSE.txt</url>
                 </license>
         </licenses>
-
-        <scm>
-                <tag>HEAD</tag>
-                <connection>scm:git:git://networld.to/var/scm/libs/context_handler.git</connection>
-                <developerConnection>scm:git:ssh://${env.USER}@networld.to:64446/var/scm/libs/context_handler.git</developerConnection>
-        </scm>
 
         <developers>
                 <developer>
@@ -66,22 +55,28 @@
                 <outputDirectory>target/site</outputDirectory>
         </reporting>
 
-        <modules>
-                <module>core</module>
-                <module>testplugin</module>
-                <module>semanticplugin</module>
-                <module>epubplugin</module>
-        </modules>
-
-        <dependencyManagement>
-                <dependencies>
-                        <dependency>
-                                <groupId>to.networld.semantic</groupId>
-                                <artifactId>contexthandler-core</artifactId>
-                                <version>${project.version}</version>
-                        </dependency>
-                </dependencies>
-        </dependencyManagement>
+        <dependencies>
+                <dependency>
+                        <groupId>to.networld.semantic</groupId>
+                        <artifactId>contexthandler-core</artifactId>
+                        <version>${project.version}</version>
+                </dependency>
+                <dependency>
+                        <groupId>to.networld.semantic</groupId>
+                        <artifactId>scrawler</artifactId>
+                        <version>0.3-SNAPSHOT</version>
+                </dependency>
+                <dependency>
+                        <groupId>dom4j</groupId>
+                        <artifactId>dom4j</artifactId>
+                        <version>1.6.1</version>
+                </dependency>
+                <dependency>
+                        <groupId>jaxen</groupId>
+                        <artifactId>jaxen</artifactId>
+                        <version>1.1.1</version>
+                </dependency>
+        </dependencies>
 
         <build>
                 <plugins>

@@ -1,5 +1,5 @@
 /**
- * context-handler - org.example.testplugin
+ * context-handler - org.example.test plugin
  *
  * Copyright (C) 2011 by Networld Project
  * Written by Alex Oberhauser <oberhauseralex@networld.to>
@@ -22,11 +22,16 @@ package to.neworld.semantic.plugins;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import to.networld.scrawler.foaf.Person;
 import to.networld.scrawler.interfaces.IFOAFPerson;
-import to.networld.scrawler.sioc.Post;
 import to.networld.semantic.contexthandler.common.Config;
 import to.networld.semantic.contexthandler.common.StringHandler;
 import to.networld.semantic.contexthandler.data.ContextTag;
@@ -38,6 +43,7 @@ import to.networld.semantic.contexthandler.plugins.Plugin;
 public class SemanticPlugin implements Plugin {
 
 	private static final String PERSON_FOAF_URL = "http://devnull.networld.to/foaf.rdf";
+	private static final int NTHREADS = 50;
 	
 	public String getPluginName() { return "Semantic Web Plugin"; }
 	public String getPluginDescription() { return "Starting from a FOAF file this plugins tries to crawl over RDF files and extract context information."; }
@@ -51,6 +57,17 @@ public class SemanticPlugin implements Plugin {
 		Vector<ContextTag> retVector = new Vector<ContextTag>();
 		try {
 			IFOAFPerson person = new Person(new URL(PERSON_FOAF_URL));
+			
+			Vector<String> publications = person.getPublications();
+			ExecutorService executor = Executors.newFixedThreadPool(NTHREADS);
+			List<Future<Vector<ContextTag>>> futures = new ArrayList<Future<Vector<ContextTag>>>();
+			for ( String publication : publications ) {
+				Callable<Vector<ContextTag>> worker = new PostFuture(publication);
+				Future<Vector<ContextTag>> submit = executor.submit(worker);
+				futures.add(submit);
+			}
+			executor.shutdown();
+			
 			Vector<String> interests = person.getInterests();
 			for ( String interest : interests ) {
 				String normalized = StringHandler.normalize(interest);
@@ -62,19 +79,8 @@ public class SemanticPlugin implements Plugin {
 				retVector.add(tag);
 			}
 			
-			Vector<String> publications = person.getPublications();
-			for ( String publication : publications ) {
-				Post post = new Post(new URL(publication));
-				Vector<String> postTopics = post.getTopics();
-				for ( String topic : postTopics ) {
-					String normalized = StringHandler.normalize(topic);
-					ContextTag tag = new ContextTag(normalized);
-					tag.setClassification(Config.getTaxonomyNamespace() + "PublicationTopic");
-					tag.setPriority(1.0f);
-					tag.setCooccurURI(publication);
-					tag.setOrgSpelling(topic);
-					retVector.add(tag);
-				}
+			for ( Future<Vector<ContextTag>> entry : futures ) {
+				retVector.addAll(entry.get());
 			}
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
