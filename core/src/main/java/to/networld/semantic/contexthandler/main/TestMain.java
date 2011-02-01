@@ -52,9 +52,10 @@ public class TestMain {
 		System.out.flush();
 		contextCloud.flush();
 		
-		System.err.println(contextCloud);
-		
-		BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(new File("/tmp/context_cloud.rdf")));
+		String contextCloudFileName = "/tmp/context_cloud.rdf";
+		BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(new File(contextCloudFileName)));
 		out.write(contextCloud.toString().getBytes());
+		out.close();
+		Logger.getLogger(TestMain.class).info("[*] Context Cloud written to '" + contextCloudFileName + "'.");
 	}
 }

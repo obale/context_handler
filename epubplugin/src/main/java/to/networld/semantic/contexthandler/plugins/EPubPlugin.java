@@ -59,30 +59,33 @@ public class EPubPlugin implements Plugin {
 			e.printStackTrace();
 		}
 		Vector<ContextTag> retVector = new Vector<ContextTag>();
-		File epubDir = new File(config.getProperty("plugin.epubplugin.dir"));
-		Logger.getLogger(EPubPlugin.class).debug("\t -> Starting context extraction from ePubs in '" + epubDir + "'...");
-		String[] epubPaths = epubDir.list(new EPubFilter());
-		for (int count = 0; count < epubPaths.length; count++ ) {
-			try {
-				String epubStr = epubDir.getAbsolutePath() + "/" + epubPaths[count];
-				EPub epub = new EPub(new ZipFile(epubStr));
-				Vector<String> subjects = epub.getSubjects();
-				for ( String subject : subjects ) {
-					ContextTag tag = new ContextTag(StringHandler.normalize(subject));
-					if ( config != null )
-						tag.setClassification(config.getTaxonomyNamespace() + "EPub");
-					tag.setPriority(1.0f);
-					tag.setOrgSpelling(subject);
-					if ( config != null ) {
-						String ebookURI = config.getEbookNamespace() +  URLEncoder.encode(epub.getTitle() + "-" + epub.getAuthor(), "UTF-8");
-						tag.setCooccurURI(ebookURI);
+		String [] epubDirectories = config.getProperty("plugin.epubplugin.dir").split(" ");
+		for ( int count=0; count < epubDirectories.length; count++ ) {
+			File epubDir = new File(epubDirectories[count]);
+			Logger.getLogger(EPubPlugin.class).debug("\t -> Starting context extraction from ePubs in '" + epubDir + "'...");
+			String[] epubPaths = epubDir.list(new EPubFilter());
+			for (int count1 = 0; count1 < epubPaths.length; count1++ ) {
+				try {
+					String epubStr = epubDir.getAbsolutePath() + "/" + epubPaths[count1];
+					EPub epub = new EPub(new ZipFile(epubStr));
+					Vector<String> subjects = epub.getSubjects();
+					for ( String subject : subjects ) {
+						ContextTag tag = new ContextTag(StringHandler.normalize(subject));
+						if ( config != null )
+							tag.setClassification(config.getTaxonomyNamespace() + "EPub");
+						tag.setPriority(1.0f);
+						tag.setOrgSpelling(subject);
+						if ( config != null ) {
+							String ebookURI = config.getEbookNamespace() +  URLEncoder.encode(epub.getTitle() + "-" + epub.getAuthor(), "UTF-8");
+							tag.setCooccurURI(ebookURI);
+						}
+						retVector.add(tag);
 					}
-					retVector.add(tag);
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (DocumentException e) {
+					e.printStackTrace();
 				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (DocumentException e) {
-				e.printStackTrace();
 			}
 		}
 		return retVector;

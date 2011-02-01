@@ -48,13 +48,7 @@ import to.networld.semantic.contexthandler.plugins.Plugin;
  * 
  * @author Alex Oberhauser
  */
-public class SemanticPlugin implements Plugin {
-
-	/**
-	 * TODO: Write a central configuration file for all plugins and read this value from the config. 
-	 */
-	private static final int NTHREADS = 50;
-	
+public class SemanticPlugin implements Plugin {	
 	public String getPluginName() { return "Semantic Web Plugin"; }
 	public String getPluginDescription() { return "Starting from a FOAF file this plugins tries to crawl over RDF files and extract context information."; }
 	public String getPluginVersion() { return "v0.01"; }
@@ -77,7 +71,7 @@ public class SemanticPlugin implements Plugin {
 		try {
 			IFOAFPerson person = new Person(new URL(foafURL));
 			Vector<String> publications = person.getPublications();
-			ExecutorService executor = Executors.newFixedThreadPool(NTHREADS);
+			ExecutorService executor = Executors.newFixedThreadPool(new Integer(config.getProperty("plugin.semanticplugin.nthreads")));
 			List<Future<Vector<ContextTag>>> futures = new ArrayList<Future<Vector<ContextTag>>>();
 			for ( String publication : publications ) {
 				Callable<Vector<ContextTag>> worker = new PostFuture(publication);
@@ -90,8 +84,7 @@ public class SemanticPlugin implements Plugin {
 			for ( String interest : interests ) {
 				String normalized = StringHandler.normalize(interest);
 				ContextTag tag = new ContextTag(normalized);
-				if ( config != null )
-					tag.setClassification(config.getTaxonomyNamespace() + "PrivateInterests");
+				tag.setClassification(config.getTaxonomyNamespace() + "PrivateInterests");
 				tag.setPriority(1.0f);
 				tag.setCooccurURI(foafURL);
 				tag.setOrgSpelling(interest);
@@ -102,9 +95,9 @@ public class SemanticPlugin implements Plugin {
 				retVector.addAll(entry.get());
 			}
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			Logger.getLogger(SemanticPlugin.class).error(e.getLocalizedMessage());
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.getLogger(SemanticPlugin.class).error(e.getLocalizedMessage());
 		}
 		return retVector;
 	}
