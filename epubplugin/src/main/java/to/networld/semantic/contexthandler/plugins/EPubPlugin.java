@@ -18,7 +18,7 @@
  * along with this software.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package to.neworld.semantic.plugins;
+package to.networld.semantic.contexthandler.plugins;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +26,7 @@ import java.net.URLEncoder;
 import java.util.Vector;
 import java.util.zip.ZipFile;
 
+import org.apache.log4j.Logger;
 import org.dom4j.DocumentException;
 
 import to.networld.scrawler.ebooks.epub.EPub;
@@ -42,12 +43,6 @@ import to.networld.semantic.contexthandler.plugins.Plugin;
  * @author Alex Oberhauser
  */
 public class EPubPlugin implements Plugin {
-
-	/**
-	 * TODO: Write a central configuration file for all plugins and read this value from the config. 
-	 */
-	private static final String EPUB_DIRECTORY = "/home/obale/FBooks/feedbooks.com/book";
-	
 	public String getPluginName() { return "EBook (ePub) Plugin"; }
 	public String getPluginDescription() { return "Extracts the topics of ebooks that are in epub format."; }
 	public String getPluginVersion() { return "v0.01"; }
@@ -64,7 +59,8 @@ public class EPubPlugin implements Plugin {
 			e.printStackTrace();
 		}
 		Vector<ContextTag> retVector = new Vector<ContextTag>();
-		File epubDir = new File(EPUB_DIRECTORY);
+		File epubDir = new File(config.getProperty("plugin.epubplugin.dir"));
+		Logger.getLogger(EPubPlugin.class).debug("\t -> Starting context extraction from ePubs in '" + epubDir + "'...");
 		String[] epubPaths = epubDir.list(new EPubFilter());
 		for (int count = 0; count < epubPaths.length; count++ ) {
 			try {

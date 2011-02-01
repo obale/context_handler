@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin
         name="Semantic Web Plugin"
-        id="to.neworld.semantic.plugins"
+        id="to.networld.semantic.contexthandler.plugins"
         version="0.01"
-        class="to.neworld.semantic.plugins.SemanticPlugin"
+        class="to.networld.semantic.contexthandler.plugins.SemanticPlugin"
 />

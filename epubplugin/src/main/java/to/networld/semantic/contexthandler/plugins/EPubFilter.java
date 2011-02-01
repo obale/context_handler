@@ -18,7 +18,7 @@
  * along with this software.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package to.neworld.semantic.plugins;
+package to.networld.semantic.contexthandler.plugins;
 
 import java.io.File;
 import java.io.FilenameFilter;

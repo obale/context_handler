@@ -18,12 +18,14 @@
  * along with this software.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package to.neworld.semantic.plugins;
+package to.networld.semantic.contexthandler.plugins;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Vector;
 import java.util.concurrent.Callable;
+
+import org.apache.log4j.Logger;
 
 import to.networld.scrawler.sioc.Post;
 import to.networld.semantic.contexthandler.common.Config;
@@ -45,6 +47,7 @@ public class PostFuture implements Callable<Vector<ContextTag>> {
 	 */
 	@Override
 	public Vector<ContextTag> call() throws Exception {
+		Logger.getLogger(PostFuture.class).debug("\t -> Starting context extraction from SIOC file '" + this.url + "'...");
 		Config config = null;
 		try {
 			config = Config.getInstance();

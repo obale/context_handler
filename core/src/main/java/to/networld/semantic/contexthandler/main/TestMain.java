@@ -25,6 +25,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
+
 import to.networld.semantic.contexthandler.data.ContextCloud;
 import to.networld.semantic.contexthandler.plugins.Plugin;
 import to.networld.semantic.contexthandler.plugins.PluginManager;
@@ -38,21 +40,19 @@ public class TestMain {
 		ContextCloud contextCloud = new ContextCloud("#myContext");
 		PluginManager pluginManager = new PluginManager();
 		Vector<Plugin> plugins = pluginManager.getPluginList();
-		System.out.println("Found plugins:");
 		for ( Plugin plugin : plugins ) {
 			try {
-				System.out.println("\t* " + plugin.getPluginName() + " " + plugin.getPluginVersion() + "\n\t  " + plugin.getPluginDescription());	
+				Logger.getLogger(TestMain.class).info("[*] Execute Plugin -> " + plugin.getPluginName() + " " + plugin.getPluginVersion() + " - " + plugin.getPluginDescription());	
 				contextCloud.addContextTags(plugin.getContextTags());
 			} catch (Exception e) {
-				System.err.println("[!!] Not able to gather context information from plugin '" + 
+				Logger.getLogger(TestMain.class).error("[!!] Not able to gather context information from plugin '" + 
 						plugin.getPluginName() + "' Reason: " + e.getLocalizedMessage());
 			}
 		}
-		System.out.println("---");
+		System.out.flush();
 		contextCloud.flush();
 		
-		System.out.println();
-		System.out.println(contextCloud);
+		System.err.println(contextCloud);
 		
 		BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(new File("/tmp/context_cloud.rdf")));
 		out.write(contextCloud.toString().getBytes());

@@ -18,7 +18,7 @@
  * along with this software.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package to.neworld.semantic.plugins;
+package to.networld.semantic.contexthandler.plugins;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -30,6 +30,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+
+import org.apache.log4j.Logger;
 
 import to.networld.scrawler.foaf.Person;
 import to.networld.scrawler.interfaces.IFOAFPerson;
@@ -51,7 +53,6 @@ public class SemanticPlugin implements Plugin {
 	/**
 	 * TODO: Write a central configuration file for all plugins and read this value from the config. 
 	 */
-	private static final String PERSON_FOAF_URL = "http://devnull.networld.to/foaf.rdf";
 	private static final int NTHREADS = 50;
 	
 	public String getPluginName() { return "Semantic Web Plugin"; }
@@ -63,16 +64,18 @@ public class SemanticPlugin implements Plugin {
 	 */
 	@Override
 	public Vector<ContextTag> getContextTags() {
+		Vector<ContextTag> retVector = new Vector<ContextTag>();
 		Config config = null;
 		try {
 			config = Config.getInstance();
-		} catch (IOException e1) {
-			e1.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return retVector;
 		}
-		Vector<ContextTag> retVector = new Vector<ContextTag>();
+		String foafURL = config.getProperty("plugin.semanticplugin.foaf");
+		Logger.getLogger(SemanticPlugin.class).debug("\t -> Starting context extraction from FOAF file '" + foafURL + "'...");
 		try {
-			IFOAFPerson person = new Person(new URL(PERSON_FOAF_URL));
-			
+			IFOAFPerson person = new Person(new URL(foafURL));
 			Vector<String> publications = person.getPublications();
 			ExecutorService executor = Executors.newFixedThreadPool(NTHREADS);
 			List<Future<Vector<ContextTag>>> futures = new ArrayList<Future<Vector<ContextTag>>>();
@@ -90,7 +93,7 @@ public class SemanticPlugin implements Plugin {
 				if ( config != null )
 					tag.setClassification(config.getTaxonomyNamespace() + "PrivateInterests");
 				tag.setPriority(1.0f);
-				tag.setCooccurURI(PERSON_FOAF_URL);
+				tag.setCooccurURI(foafURL);
 				tag.setOrgSpelling(interest);
 				retVector.add(tag);
 			}

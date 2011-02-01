@@ -44,6 +44,8 @@ public class Config {
 		return instance;
 	}
 	
+	public String getProperty(String _key) { return this.prop.getProperty(_key); }
+	
 	public String getContextTagPrefix() { return this.prop.getProperty("core.ContextTagPrefix"); }
 
 	/**
