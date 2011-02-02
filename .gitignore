@@ -4,3 +4,4 @@ target
 .classpath
 .project
 .settings
+core/src/main/resources/plugins/*.jar
