@@ -59,8 +59,7 @@ public class TestPlugin implements Plugin {
 			exampleTag.incrementFrequency();
 			exampleTag.setPriority(0.80f);
 			if ( config != null ) {
-				exampleTag.setClassification(config.getTaxonomyNamespace() + "Interests");
-				exampleTag.setClassification(config.getTaxonomyNamespace() + "Work");
+				exampleTag.setClassification(config.getTaxonomyNamespace() + "BusinessInterests");
 			}
 			exampleTag.setCooccurURI("http://example.org/work/foaf.rdf");
 			exampleTag.setCooccurURI("http://example.org/private/foaf.rdf");
@@ -74,8 +73,7 @@ public class TestPlugin implements Plugin {
 			exampleTag2.incrementFrequency();
 			exampleTag2.setPriority(1.0f);
 			if ( config != null ) {
-				exampleTag2.setClassification(config.getTaxonomyNamespace() + "Private");
-				exampleTag2.setClassification(config.getTaxonomyNamespace() + "Interests");
+				exampleTag2.setClassification(config.getTaxonomyNamespace() + "PrivateInterests");
 			}
 			exampleTag2.setCooccurURI("http://example.org/private/foaf.rdf");
 			retVector.add(exampleTag2);
@@ -88,8 +86,8 @@ public class TestPlugin implements Plugin {
 			exampleTag3.incrementFrequency();
 			exampleTag3.setPriority(1.0f);
 			if ( config != null ) {
-				exampleTag3.setClassification(config.getTaxonomyNamespace() + "Work");
-				exampleTag3.setClassification(config.getTaxonomyNamespace() + "Private");
+				exampleTag3.setClassification(config.getTaxonomyNamespace() + "BusinessContext");
+				exampleTag3.setClassification(config.getTaxonomyNamespace() + "PrivateContext");
 			}
 			exampleTag3.setCooccurURI("http://example.org/work/foaf.rdf");
 			exampleTag3.setCooccurURI("http://example.org/private/foaf.rdf");

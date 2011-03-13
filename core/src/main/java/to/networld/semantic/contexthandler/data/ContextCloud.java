@@ -50,6 +50,7 @@ public class ContextCloud extends RDFEntity implements IContextCloud {
 		rdfRootNode.add(Ontologies.RDF);
 		rdfRootNode.add(Ontologies.RDFS);
 		rdfRootNode.add(Ontologies.SCOT);
+		rdfRootNode.add(Ontologies.SKOS);
 		rdfRootNode.add(Ontologies.LIST);
 		
 		this.contextTagRootNode = rdfRootNode.addElement(new QName("TagCloud", Ontologies.SCOT));

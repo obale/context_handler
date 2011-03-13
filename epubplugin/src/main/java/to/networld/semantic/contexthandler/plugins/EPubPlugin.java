@@ -72,7 +72,7 @@ public class EPubPlugin implements Plugin {
 					for ( String subject : subjects ) {
 						ContextTag tag = new ContextTag(StringHandler.normalize(subject));
 						if ( config != null )
-							tag.setClassification(config.getTaxonomyNamespace() + "EPub");
+							tag.setClassification(config.getTaxonomyNamespace() + "PrivateEbookTopic");
 						tag.setPriority(1.0f);
 						tag.setOrgSpelling(subject);
 						if ( config != null ) {

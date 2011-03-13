@@ -89,7 +89,8 @@ public class ContextTag extends RDFEntity implements IContextTag {
 	public void setClassification(String _classificationURIorString) {
 		if ( !this.classificationVector.contains(_classificationURIorString) ) {
 			this.classificationVector.add(_classificationURIorString);
-			this.tagNode.addElement(new QName("object", Ontologies.RDF)).addText(_classificationURIorString);
+			Element hasTopConcept = this.tagNode.addElement(new QName("broader", Ontologies.SKOS));
+			hasTopConcept.addAttribute(new QName("resource", Ontologies.RDF), _classificationURIorString);
 		}
 	}
 

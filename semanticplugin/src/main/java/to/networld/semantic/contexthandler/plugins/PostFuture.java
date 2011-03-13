@@ -61,7 +61,7 @@ public class PostFuture implements Callable<Vector<ContextTag>> {
 			String normalized = StringHandler.normalize(topic);
 			ContextTag tag = new ContextTag(normalized);
 			if (config != null )
-				tag.setClassification(config.getTaxonomyNamespace() + "PublicationTopic");
+				tag.setClassification(config.getTaxonomyNamespace() + "PrivatePublicationTopic");
 			tag.setPriority(1.0f);
 			tag.setCooccurURI(this.url);
 			tag.setOrgSpelling(topic);

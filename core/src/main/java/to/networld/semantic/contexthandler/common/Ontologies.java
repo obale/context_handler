@@ -32,5 +32,6 @@ public abstract class Ontologies {
 	public static Namespace RDF = new Namespace("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
 	public static Namespace RDFS = new Namespace("rdfs", "http://www.w3.org/2000/01/rdf-schema#");
 	public static Namespace SCOT = new Namespace("scot", "http://scot-project.org/scot/ns#");
+	public static Namespace SKOS = new Namespace("skos", "http://www.w3.org/2004/02/skos/core#");
 	public static Namespace LIST = new Namespace("list", "http://crschmidt.net/ns/list#");
 }

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+        xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+        xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+        xmlns:dc="http://purl.org/dc/elements/1.1/"
+        xmlns:dcterms="http://purl.org/dc/terms/">
+
+        <skos:ConceptScheme rdf:about="">
+                <rdfs:comment>This is a Context Taxonomy written in SKOS.</rdfs:comment>
+                <dc:creator rdf:resource="http://devnull.networld.to/foaf.rdf#me"/>
+                <dc:date>2011-03-05</dc:date>
+                <dcterms:modified>2011-03-07</dcterms:modified>
+                <skos:hasTopConcept rdf:resource="#DynamicContext"/>
+                <skos:hasTopConcept rdf:resource="#StaticContext"/>
+                <skos:hasTopConcept rdf:resource="#PrivateContext"/>
+                <skos:hasTopConcept rdf:resource="#BusinessContext"/>
+        </skos:ConceptScheme>
+
+        <skos:Concept rdf:about="#DynamicContext">
+                <skos:prefLabel>Dynamic Context</skos:prefLabel>
+                <rdfs:comment>Describes context information that expire on a fixed date in the future (e.g. location, appointments).</rdfs:comment>
+        </skos:Concept>
+
+        <skos:Concept rdf:about="#StaticContext">
+                <skos:prefLabel>Static Context</skos:prefLabel>
+                <rdfs:comment>Describes context information that have no fixed expire date (e.g. interests, publication topic).</rdfs:comment>
+        </skos:Concept>
+
+        <skos:Concept rdf:about="#PrivateContext">
+                <skos:prefLabel>Private Context Information</skos:prefLabel>
+                <rdfs:comment>Describes private context information of an agent.</rdfs:comment>
+                <skos:narrower>
+                        <skos:Concept rdf:about="#PrivateInterest">
+                                <skos:prefLabel>Private Interests</skos:prefLabel>
+                                <rdfs:comment>Describes the interest related to the private life.</rdfs:comment>
+                        </skos:Concept>
+                        <skos:Concept rdf:about="#PrivatePublicationTopic">
+                                <skos:prefLabel>Private Publication Topic</skos:prefLabel>
+                                <rdfs:comment>Describes the topic of a private publication.</rdfs:comment>
+                        </skos:Concept>
+                        <skos:Concept rdf:about="#PrivateLectureTopic">
+                                <skos:prefLabel>Private Lecture Topic</skos:prefLabel>
+                                <rdfs:comment>Describes the topic of the private readings (e.g. books, magazine, articles).</rdfs:comment>
+                                <skos:narrower>
+                                        <skos:Concept rdf:about="#PrivateDigitalLectureTopic">
+                                                <skos:prefLabel>Private Digital Lecture Topic</skos:prefLabel>
+                                                <rdfs:comment>Describes the topic of the digital readings.</rdfs:comment>
+                                                <skos:narrower>
+                                                        <skos:Concept rdf:about="#PrivateEbookTopic">
+                                                                <skos:prefLabel>Private E-Books</skos:prefLabel>
+                                                                <rdfs:comment>Describes the topic of the ebook readings.</rdfs:comment>
+                                                                <!-- skos:narrower with each ebook format!?! -->
+                                                        </skos:Concept>
+                                                </skos:narrower>
+                                        </skos:Concept>
+                                        <skos:Concept rdf:about="#PrivateAnalogLectureTopic">
+                                                <skos:prefLabel>Private Analog Lecture Topic</skos:prefLabel>
+                                                <rdfs:comment>Describes the topic of the analog readings.</rdfs:comment>
+                                        </skos:Concept>
+                                </skos:narrower>
+                        </skos:Concept>
+                        <skos:Concept rdf:about="#PrivateAppointmentTopic">
+                                <skos:prefLabel>Private Appointment Topic</skos:prefLabel>
+                                <rdfs:comment>Describes the topic of a private appointment.</rdfs:comment>
+                        </skos:Concept>
+                </skos:narrower>
+        </skos:Concept>
+
+        <skos:Concept rdf:about="#BusinessContext">
+                <skos:prefLabel>Business Context Information</skos:prefLabel>
+                <rdfs:comment>Describes business context information of an agent.</rdfs:comment>
+                <skos:narrower>
+                        <skos:Concept rdf:about="#BusinessInterest">
+                                <skos:prefLabel>Business Interests</skos:prefLabel>
+                                <rdfs:comment>Describes the interest related to the business life.</rdfs:comment>
+                        </skos:Concept>
+                        <skos:Concept rdf:about="#BusinessPublicationTopic">
+                                <skos:prefLabel>Business Publication Topic</skos:prefLabel>
+                                <rdfs:comment>Describes the topic of the business publications.</rdfs:comment>
+                        </skos:Concept>
+                        <skos:Concept rdf:about="#BusinessLectureTopic">
+                                <skos:prefLabel>Business Lecture Topic</skos:prefLabel>
+                                <rdfs:comment>Describes the topic of the business readings (e.g. books, magazine, articles).</rdfs:comment>
+                                <skos:narrower>
+                                        <skos:Concept rdf:about="#BusinessDigitalLectureTopic">
+                                                <skos:prefLabel>Business Digital Lecture Topic</skos:prefLabel>
+                                                <rdfs:comment>Describes the topic of a digital reading.</rdfs:comment>
+                                                <skos:narrower>
+                                                        <skos:Concept rdf:about="#BusinessEbookTopic">
+                                                                <skos:prefLabel>Business E-Books</skos:prefLabel>
+                                                                <rdfs:comment>Describes the topic of an ebook reading.</rdfs:comment>
+                                                                <!-- skos:narrower with each ebook format!?! -->
+                                                        </skos:Concept>
+                                                </skos:narrower>
+                                        </skos:Concept>
+                                        <skos:Concept rdf:about="#BusinessAnalogLectureTopic">
+                                                <skos:prefLabel>Business Analog Lecture Topic</skos:prefLabel>
+                                                <rdfs:comment>Describes the topic of an analog reading.</rdfs:comment>
+                                        </skos:Concept>
+                                </skos:narrower>
+                        </skos:Concept>
+                        <skos:Concept rdf:about="#BusinessAppointmentTopic">
+                                <skos:prefLabel>Business Appointment Topic</skos:prefLabel>
+                                <rdfs:comment>Describes the topic of a business appointment.</rdfs:comment>
+                        </skos:Concept>
+                </skos:narrower>
+        </skos:Concept>
+</rdf:RDF>

@@ -1,0 +1,19 @@
+* DynamicContext
+* StaticContext
+* PrivateContext
+        -> PrivateInterest
+        -> PrivatePublicationTopic
+        -> PrivateLectureTopic
+                -> PrivateDigitalLectureTopic
+                        -> PrivateEbookTopic
+                -> PrivateAnalogLectureTopic
+        -> PrivateAppointmentTopic
+
+* BusinessContext
+        -> BusinessInterest
+        -> BusinessPublicationTopic
+        -> BusinessLectureTopic
+                -> BusinessDigitalLectureTopic
+                        -> BusinessEbookTopic
+                -> BusinessAnalogLectureTopic
+        -> BusinessAppointmentTopic

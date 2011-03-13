@@ -84,7 +84,7 @@ public class SemanticPlugin implements Plugin {
 			for ( String interest : interests ) {
 				String normalized = StringHandler.normalize(interest);
 				ContextTag tag = new ContextTag(normalized);
-				tag.setClassification(config.getTaxonomyNamespace() + "PrivateInterests");
+				tag.setClassification(config.getTaxonomyNamespace() + "PrivateInterest");
 				tag.setPriority(1.0f);
 				tag.setCooccurURI(foafURL);
 				tag.setOrgSpelling(interest);
